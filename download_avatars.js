@@ -19,26 +19,40 @@ function getRepoContributors(repoOwner, repoName, cb) {
 }
 
 function downloadImageByURL(url, filePath) {
-  if(fs.existsSync("./avatars") === false) {
-    fs.mkdirSync("./avatars");
+  if(fs.existsSync('./avatars') === false) {
+    fs.mkdirSync('./avatars');
   }
   request.get(url)
          .on('error', function (err) {
          throw err;
           })
-         .pipe(fs.createWriteStream("./avatars/" + filePath + '.jpg'));
+         .pipe(fs.createWriteStream('./avatars/' + filePath + '.jpg'));
 }
 
 
   if (!theRepoOwner || !theRepoName) {
-    console.error("Please specify repoOwner and repoName");
-  } else {
+    console.error('Please specify repoOwner and repoName');
+  }
+
+  if (process.argv.length >= 5) {
+    console.error('Incorrect number of arguments given to program, please specify repoOwner and repoName');
+  }
+
+  if (!GITHUB_TOKEN || !GITHUB_USER) {
+    console.error('Please create and populate .env file')
+  }
+
+  else {
 
 getRepoContributors(theRepoOwner, theRepoName, function(err, result) {
   if (err) {
-  console.log("Errors:", err);
+  console.log('Errors:', err);
 }
   var json = JSON.parse(result.body);
+  if(json.message === 'Bad credentials') {
+  console.error('Please imput correct credentials in .env file');
+  throw err;
+}
 
   json.forEach(function(element) {
     downloadImageByURL(element.avatar_url, element.login)
