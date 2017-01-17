@@ -2,11 +2,12 @@ var request = require('request');
 var fs = require('fs');
 var theRepoOwner =  process.argv[2];
 var theRepoName =  process.argv[3];
+var dotenv = require('dotenv').config()
+var GITHUB_USER = process.env.GITHUB_USER;
+var GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
-var GITHUB_USER = "felips70";
-var GITHUB_TOKEN = "679bbc02e4e7d7257a37d47186c08f9fc9a0082b";
 
 
 function getRepoContributors(repoOwner, repoName, cb) {
