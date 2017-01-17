@@ -15,20 +15,6 @@ function getRepoContributors(repoOwner, repoName, cb) {
   request.get(options, cb);
 }
 
-
-getRepoContributors("jquery", "jquery", function(err, result) {
-  if (err) {
-  console.log("Errors:", err);
-}
-  var json = JSON.parse(result.body);
-  var avatarURLs = [];
-  for(var i = 0; i < json.length; i++) {
-    avatarURLs.push(json[i].avatar_url);
-  }
-  return avatarURLs;
-});
-
-
 function downloadImageByURL(url, filePath) {
   if(fs.existsSync("./avatars") === false) {
     fs.mkdirSync("./avatars");
@@ -37,7 +23,27 @@ function downloadImageByURL(url, filePath) {
          .on('error', function (err) {
          throw err;
           })
-         .pipe(fs.createWriteStream("./avatars/" + filePath));
+         .pipe(fs.createWriteStream("./avatars/" + filePath + '.jpg'));
 }
 
-downloadImageByURL("https://avatars.githubusercontent.com/u/1615?v=3", "jeresig.jpg")
+
+
+getRepoContributors("jquery", "jquery", function(err, result) {
+  if (err) {
+  console.log("Errors:", err);
+}
+  var json = JSON.parse(result.body);
+  // var avatarURLs = [];
+  // var avatarLogin = [];
+  // for(var i = 0; i < json.length; i++) {
+  //   avatarURLs.push(json[i].avatar_url);
+  //   avatarLogin.push(json[i].login);
+  // }
+
+  json.forEach(function(element) {
+
+    downloadImageByURL(element.avatar_url, element.login)
+
+  })
+
+});
