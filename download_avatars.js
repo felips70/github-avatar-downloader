@@ -1,5 +1,7 @@
 var request = require('request');
 var fs = require('fs');
+var theRepoOwner =  process.argv[2];
+var theRepoName =  process.argv[3];
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
@@ -28,7 +30,7 @@ function downloadImageByURL(url, filePath) {
 
 
 
-getRepoContributors("jquery", "jquery", function(err, result) {
+getRepoContributors(theRepoOwner, theRepoName, function(err, result) {
   if (err) {
   console.log("Errors:", err);
 }
