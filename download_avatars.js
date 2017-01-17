@@ -29,23 +29,19 @@ function downloadImageByURL(url, filePath) {
 }
 
 
+  if (!theRepoOwner || !theRepoName) {
+    console.error("Please specify repoOwner and repoName");
+  } else {
 
 getRepoContributors(theRepoOwner, theRepoName, function(err, result) {
   if (err) {
   console.log("Errors:", err);
 }
   var json = JSON.parse(result.body);
-  // var avatarURLs = [];
-  // var avatarLogin = [];
-  // for(var i = 0; i < json.length; i++) {
-  //   avatarURLs.push(json[i].avatar_url);
-  //   avatarLogin.push(json[i].login);
-  // }
 
   json.forEach(function(element) {
-
     downloadImageByURL(element.avatar_url, element.login)
-
-  })
+  });
 
 });
+}
